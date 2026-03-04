@@ -290,26 +290,32 @@ if (sliderContainer) {
 }
 
 // Counter Animation Logic
-const counters = document.querySelectorAll('.counter');
-const speed = 200; // The lower the slower
-
 const animateCounters = () => {
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
+    const statsElements = document.querySelectorAll('.counter');
+    const duration = 2000; // Total time for animation in ms
 
-            // Lower increment to slow and smooth it out
-            const inc = target / speed;
+    statsElements.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const startTime = performance.now();
 
-            if (count < target) {
-                counter.innerText = Math.ceil(count + inc);
-                setTimeout(updateCount, 15);
+        const updateCount = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function for smoother finish
+            const easeOutQuad = (t) => t * (2 - t);
+            const currentCount = Math.floor(easeOutQuad(progress) * target);
+
+            counter.innerText = currentCount;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount);
             } else {
                 counter.innerText = target;
             }
         };
-        updateCount();
+
+        requestAnimationFrame(updateCount);
     });
 };
 
