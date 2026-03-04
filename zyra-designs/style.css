@@ -533,7 +533,7 @@ select.consult-input {
 }
 
 .mobile-link {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0.75rem 0;
@@ -541,6 +541,10 @@ select.consult-input {
     transform: translateY(15px);
     transition: all 0.4s ease;
     letter-spacing: -0.02em;
+}
+
+.mobile-link:hover {
+    color: #11d411;
 }
 
 .mobile-menu-overlay.active .mobile-link {

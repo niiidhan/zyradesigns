@@ -51,6 +51,13 @@
 
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenu">
+        <!-- New: Close Button inside overlay -->
+        <button onclick="toggleMobileMenu()" class="absolute top-6 right-8 p-3 text-brandDark focus:outline-none"
+            aria-label="Close menu">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
         <div class="flex flex-col items-center py-10">
             <a href="javascript:void(0)" onclick="closeMobileMenu(); window.scrollTo({top:0,behavior:'smooth'})"
                 class="mobile-link" style="transition-delay: 100ms;">Home</a>
