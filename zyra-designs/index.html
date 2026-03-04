@@ -1,0 +1,2518 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Zyra Designs</title>
+    <!-- Google Fonts: Manrope -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#11d411',
+                        brandDark: '#1a1a1a',
+                        brandSoft: '#fdfbf7',
+                    },
+                    borderRadius: {
+                        'custom': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style data-purpose="custom-typography">
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            color: #333;
+            background-color: #ffffff;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        section {
+            scroll-behavior: smooth;
+        }
+    </style>
+    <style data-purpose="layout-refinements">
+        /* Layout & Card Refinements */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero-bento-card {
+            border-radius: 48px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-main-card {
+            background-color: #f3f0ff;
+            /* Soft Lavender hint */
+            min-height: 400px;
+        }
+
+        .feature-card-grid {
+            margin-top: 24px;
+        }
+
+        .feature-card {
+            position: relative;
+            height: 340px;
+            border-radius: 40px;
+            overflow: hidden;
+        }
+
+        .feature-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .feature-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            color: white;
+            z-index: 10;
+        }
+
+        /* Rotating Text Style */
+        .rotating-text-container {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            width: 300px;
+            height: 300px;
+            pointer-events: none;
+            opacity: 0.15;
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .word-scroller {
+            display: inline-block;
+            height: 1.15em;
+            vertical-align: bottom;
+            overflow: hidden;
+            position: relative;
+            color: #11d411;
+            line-height: 1.15em;
+        }
+
+        .word-scroller-inner {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .word-scroller-inner span {
+            height: 1.15em;
+            line-height: 1.15em;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* Animation Classes */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Restored Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        /* Restored Floating Buttons */
+        .floating-btn {
+            position: fixed;
+            z-index: 90;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            text-decoration: none;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.2);
+        }
+
+        .whatsapp-btn {
+            bottom: 28px;
+            right: 28px;
+            background: #25D366;
+            color: white;
+        }
+
+        .back-to-top {
+            bottom: 96px;
+            right: 28px;
+            background: #1a1a1a;
+            color: white;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Restored Premium Team Section Styles */
+        .member-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #fff;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-image-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        .member-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .member-card:hover .member-image {
+            transform: scale(1.05);
+        }
+
+        .member-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top,
+                    rgba(0, 0, 0, 0.9) 0%,
+                    rgba(0, 0, 0, 0.4) 40%,
+                    transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .member-card:hover .member-overlay {
+            opacity: 1;
+        }
+
+        .member-brief {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: #fff;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .member-card:hover .member-brief {
+            transform: translateY(100%);
+        }
+
+        .member-details {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.1s;
+        }
+
+        .member-card:hover .member-details {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .member-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .member-social-link:hover {
+            background: #11d411;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* FAQ Accordion Styles */
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            transition: color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            color: #11d411;
+        }
+
+        .faq-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #1a1a1a;
+        }
+
+        .faq-item.active .faq-question {
+            color: #11d411;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: #11d411;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-answer-inner {
+            padding: 0 0 32px 0;
+            color: #6b7280;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        /* Testimonial Section Logic Styles */
+        .testimonial-slide {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .testimonial-slide.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-dot.active {
+            background: #11d411;
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        .stats-card {
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Consultation Section Refinements */
+        .consult-input {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white !important;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Custom Arrow for Select */
+        select.consult-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2311d411' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 1.25rem;
+            padding-right: 3.5rem;
+        }
+
+        /* Fix for invisible options in some browsers */
+        .consult-input option {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 12px;
+        }
+
+        .consult-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #11d411;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(17, 212, 17, 0.1);
+        }
+
+        .consult-card {
+            background: #1a1a1a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consult-card::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(17, 212, 17, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-message {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid #11d411;
+            transform: translateX(120%);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: auto;
+            min-width: 320px;
+        }
+
+        .toast-message.active {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(17, 212, 17, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #11d411;
+            flex-shrink: 0;
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+        }
+
+        .mobile-menu-overlay.active {
+            transform: translateY(0);
+        }
+
+        .mobile-link {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0.75rem 0;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s ease;
+            letter-spacing: -0.02em;
+        }
+
+        .mobile-menu-overlay.active .mobile-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hamburger-line {
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn.active .line-1 {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger-btn.active .line-2 {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active .line-3 {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Essential Mobile Touch Animations (Mirroring Hover) */
+        @media (hover: none) {
+
+            .feature-card:active img,
+            .hero-bento-card:active img {
+                transform: scale(1.08);
+            }
+
+            .faq-question:active {
+                color: #11d411;
+            }
+
+            .vol-btn:active,
+            .floating-btn:active {
+                transform: scale(0.92);
+                background: #11d411 !important;
+                color: white !important;
+            }
+
+            button:active {
+                transform: scale(0.98);
+            }
+
+            .mobile-link:active {
+                color: #11d411;
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- BEGIN: Navigation -->
+    <nav class="fixed top-2 lg:top-6 left-0 right-0 z-50 pointer-events-none">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between pointer-events-auto">
+            <div onclick="window.scrollTo({top:0,behavior:'smooth'})"
+                class="flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 lg:px-6 py-2.5 lg:py-3 rounded-full border border-white/40 shadow-sm cursor-pointer scale-90 lg:scale-100 origin-left transition-transform active:scale-95">
+                <div class="w-5 h-5 lg:w-6 lg:h-6 bg-primary rounded-full"></div>
+                <span class="text-base lg:text-lg font-extrabold tracking-tight">ZYRA DESIGNS</span>
+            </div>
+            <div
+                class="hidden md:flex items-center gap-2 bg-white/70 backdrop-blur-md p-2 rounded-full border border-white/40 shadow-sm ml-auto mr-4">
+                <a class="px-5 py-2 hover:bg-white rounded-full transition-all text-sm font-bold text-gray-800"
+                    href="#">Home</a>
+                <a class="px-5 py-2 hover:bg-white rounded-full transition-all text-sm font-bold text-gray-800"
+                    href="#about">About Us</a>
+                <a class="px-5 py-2 hover:bg-white rounded-full transition-all text-sm font-bold text-gray-800"
+                    href="#reviews">Testimonials</a>
+                <a class="px-5 py-2 bg-brandDark text-white rounded-full transition-all text-sm font-bold"
+                    href="#contact">Contact Us</a>
+            </div>
+
+            <!-- Hamburger Button -->
+            <button onclick="toggleMobileMenu()"
+                class="hamburger-btn md:hidden flex flex-col gap-1.5 p-3 bg-white/70 backdrop-blur-md rounded-full border border-white/40 shadow-sm z-[110] outline-none">
+                <span class="hamburger-line line-1 w-6 h-0.5 bg-brandDark block"></span>
+                <span class="hamburger-line line-2 w-6 h-0.5 bg-brandDark block"></span>
+                <span class="hamburger-line line-3 w-6 h-0.5 bg-brandDark block"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- END: Navigation -->
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="flex flex-col items-center py-10">
+            <a href="javascript:void(0)" onclick="closeMobileMenu(); window.scrollTo({top:0,behavior:'smooth'})"
+                class="mobile-link" style="transition-delay: 100ms;">Home</a>
+            <a href="#about" onclick="closeMobileMenu()" class="mobile-link" style="transition-delay: 200ms;">About
+                Us</a>
+            <a href="#reviews" onclick="closeMobileMenu()" class="mobile-link"
+                style="transition-delay: 300ms;">Testimonials</a>
+            <a href="#contact" onclick="closeMobileMenu()" class="mobile-link" style="transition-delay: 400ms;">Contact
+                Us</a>
+
+            <div class="mt-8 flex flex-col items-center gap-3 opacity-30">
+                <div class="h-8 w-px bg-brandDark"></div>
+                <p class="text-[9px] uppercase tracking-[0.4em] font-bold">Studio Bangalore</p>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN: Bento Hero Section -->
+    <section class="pt-28 pb-10 bg-[#fbfbfb]">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <!-- Hero Top Row -->
+            <div
+                class="hero-bento-card hero-main-card relative flex items-center p-8 lg:p-10 xl:p-14 2xl:p-16 overflow-hidden group">
+                <!-- Rotating Text Detail (Reference Style) -->
+                <div class="rotating-text-container">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <path id="heroCircle" d="M 50, 50 m -35, 0 a 35, 35 0 1, 1 70,0 a 35, 35 0 1, 1 -70,0"
+                            fill="transparent" />
+                        <text class="text-[8px] uppercase font-bold tracking-[0.3em] fill-brandDark opacity-40">
+                            <textPath xlink:href="#heroCircle">Crafting excellence in every detail • Modern Living •
+                                Luxury Design •</textPath>
+                        </text>
+                    </svg>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+                    <div>
+                        <span
+                            class="inline-block px-4 py-1.5 bg-brandDark/5 text-brandDark/60 text-xs font-bold rounded-full uppercase tracking-widest mb-5">
+                            Human-Body-Soul Balance
+                        </span>
+                        <h1
+                            class="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold leading-[1.1] mb-6 text-brandDark">
+                            Achieve <br>
+                            balance in <br>
+                            <span class="word-scroller">
+                                <span class="word-scroller-inner font-bold text-primary">
+                                    <span>Elegance</span>
+                                    <span>Living</span>
+                                    <span>Design</span>
+                                </span>
+                            </span>
+                        </h1>
+                        <p class="text-xl text-gray-600/80 mb-6 leading-relaxed max-w-md">
+                            We specialize in high-end environments that blend human-centered design with sophisticated
+                            living solutions.
+                        </p>
+                    </div>
+
+                    <!-- Integrated Image with overflow effect -->
+                    <div class="relative hidden lg:block">
+                        <div
+                            class="w-full aspect-[4/3] rounded-[40px] overflow-hidden rotate-[-5deg] scale-110 shadow-3xl">
+                            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                                alt="Main Portfolio Piece">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Bottom Feature Row -->
+            <div class="grid md:grid-cols-3 gap-8 feature-card-grid">
+                <!-- Commercial Spaces -->
+                <div class="feature-card group">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800"
+                        alt="Dynamic Commercial Workspace">
+                    <div class="feature-overlay">
+                        <div class="flex justify-between items-start mb-auto">
+                            <span
+                                class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider">Commercial</span>
+                            <div
+                                class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brandDark shadow-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-extrabold leading-[1.1]">Dynamic <br>Workspaces</h3>
+                    </div>
+                </div>
+
+                <!-- Residential -->
+                <div class="feature-card group">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800"
+                        alt="High-end Residential Living">
+                    <div class="feature-overlay">
+                        <div class="flex justify-between items-start mb-auto">
+                            <span
+                                class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider">Residential</span>
+                            <div
+                                class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brandDark shadow-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-extrabold leading-[1.1]">Luxury <br>Living</h3>
+                    </div>
+                </div>
+
+                <!-- Bespoke CTA -->
+                <div class="feature-card bg-[#e7f3f1] p-8 flex flex-col group border border-black/5">
+                    <div class="flex justify-between items-start mb-auto">
+                        <span
+                            class="px-4 py-1.5 bg-brandDark text-white rounded-full text-xs font-bold uppercase tracking-wider">Estimate</span>
+                        <div
+                            class="w-10 h-10 bg-brandDark rounded-full flex items-center justify-center text-white shadow-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-3xl font-extrabold leading-[1.1] text-brandDark mb-4">Start Your <br>Project
+                            Today</h3>
+                        <div class="relative">
+                            <input type="email" placeholder="Your email address"
+                                class="w-full bg-white/50 border border-brandDark/10 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary mb-4 text-brandDark">
+                            <button
+                                class="w-full bg-brandDark text-white font-bold py-4 rounded-2xl hover:bg-primary transition-all">Get
+                                Detailed Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END: Bento Hero Section -->
+    <!-- BEGIN: Services Section (Explore Our Expertise) -->
+    <section class="py-16 lg:py-28 xl:py-28 bg-white relative overflow-hidden">
+        <!-- Decorative blurred backgrounds matching site style -->
+        <div
+            class="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl -mr-40 -mt-40 pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -ml-60 -mb-60 pointer-events-none">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brandSoft/50 rounded-full blur-3xl pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6">
+                <div class="max-w-2xl">
+                    <span
+                        class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-4">Our
+                        Specialization</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-brandDark mb-4 leading-[1.08]">
+                        Explore our expertise</h2>
+                    <p class="text-gray-500 text-lg leading-relaxed">We combine artistic vision with technical precision
+                        to deliver spaces that are as functional as they are beautiful.</p>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#"
+                        class="inline-flex items-center gap-2 text-brandDark font-bold hover:text-primary transition-colors group">
+                        View all services
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Service Cards Grid -->
+            <div class="grid lg:grid-cols-3 gap-8">
+
+                <!-- Service Card 1: Residential Design -->
+                <div
+                    class="group relative bg-white rounded-[32px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 overflow-hidden">
+                    <!-- Card Image -->
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800"
+                            alt="Luxury Residential Interior"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-80">
+                        </div>
+                        <!-- Number badge -->
+                        <div
+                            class="absolute top-5 left-6 w-10 h-10 bg-white/80 backdrop-blur-md rounded-xl flex items-center justify-center text-sm font-extrabold text-brandDark shadow-sm border border-white/50">
+                            01</div>
+                        <!-- Category pill -->
+                        <div
+                            class="absolute top-5 right-6 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[11px] font-bold uppercase tracking-wider text-brandDark/70 border border-white/50">
+                            Residential</div>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8 pt-4">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+                                <svg class="w-6 h-6 text-primary group-hover:text-white transition-colors" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-brandDark">Residential Design</h3>
+                        </div>
+                        <p class="text-gray-500 mb-6 leading-relaxed text-[15px]">Elevating your daily living experience
+                            through personalized, human-centric design solutions for every corner of your home.</p>
+
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Custom Furniture &amp; Cabinetry</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Space Planning &amp; Floor Layouts</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Lighting &amp; Electrical Schematics</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Kitchen &amp; Bath Remodeling</span>
+                            </div>
+                        </div>
+
+                        <a href="#"
+                            class="flex items-center gap-2 text-primary font-bold group-hover:gap-3 transition-all text-sm">
+                            Learn More
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service Card 2: Commercial Interiors -->
+                <div
+                    class="group relative bg-white rounded-[32px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 overflow-hidden">
+                    <!-- Card Image -->
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800"
+                            alt="Modern Commercial Workspace"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="absolute top-5 left-6 w-10 h-10 bg-white/80 backdrop-blur-md rounded-xl flex items-center justify-center text-sm font-extrabold text-brandDark shadow-sm border border-white/50">
+                            02</div>
+                        <div
+                            class="absolute top-5 right-6 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[11px] font-bold uppercase tracking-wider text-brandDark/70 border border-white/50">
+                            Commercial</div>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8 pt-4">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
+                                <svg class="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-brandDark">Commercial Interiors</h3>
+                        </div>
+                        <p class="text-gray-500 mb-6 leading-relaxed text-[15px]">Strategic environments designed to
+                            foster creativity, productivity, and positive brand perception for modern businesses.</p>
+
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Retail &amp; Showroom Strategy</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Modern Office &amp; Co-working</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Hospitality &amp; Restaurant Units</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Brand-Integrated Design</span>
+                            </div>
+                        </div>
+
+                        <a href="#"
+                            class="flex items-center gap-2 text-blue-600 font-bold group-hover:gap-3 transition-all text-sm">
+                            Learn More
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service Card 3: Bespoke Styling -->
+                <div
+                    class="group relative bg-white rounded-[32px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 overflow-hidden">
+                    <!-- Card Image -->
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=800"
+                            alt="Bespoke Interior Styling"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="absolute top-5 left-6 w-10 h-10 bg-white/80 backdrop-blur-md rounded-xl flex items-center justify-center text-sm font-extrabold text-brandDark shadow-sm border border-white/50">
+                            03</div>
+                        <div
+                            class="absolute top-5 right-6 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[11px] font-bold uppercase tracking-wider text-brandDark/70 border border-white/50">
+                            Styling</div>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8 pt-4">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center group-hover:bg-purple-600 transition-colors duration-300">
+                                <svg class="w-6 h-6 text-purple-600 group-hover:text-white transition-colors"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-brandDark">Bespoke Styling</h3>
+                        </div>
+                        <p class="text-gray-500 mb-6 leading-relaxed text-[15px]">The art of the final layer. We curate
+                            the finishing touches that transform a designed room into a magazine-ready home.</p>
+
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Art &amp; Accessory Selection</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Color &amp; Texture Consultation</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Professional Interior Staging</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <div
+                                    class="w-5 h-5 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <span>Seasonal Living Refreshes</span>
+                            </div>
+                        </div>
+
+                        <a href="#"
+                            class="flex items-center gap-2 text-purple-600 font-bold group-hover:gap-3 transition-all text-sm">
+                            Learn More
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-16 lg:mt-20 pt-12 border-t border-gray-100">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+                    <div class="text-center">
+                        <div class="text-3xl lg:text-4xl font-extrabold text-brandDark mb-1">250<span
+                                class="text-primary">+</span></div>
+                        <div class="text-sm text-gray-400 font-medium">Projects Completed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl lg:text-4xl font-extrabold text-brandDark mb-1">12<span
+                                class="text-primary">+</span></div>
+                        <div class="text-sm text-gray-400 font-medium">Years Experience</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl lg:text-4xl font-extrabold text-brandDark mb-1">98<span
+                                class="text-primary">%</span></div>
+                        <div class="text-sm text-gray-400 font-medium">Client Satisfaction</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl lg:text-4xl font-extrabold text-brandDark mb-1">15<span
+                                class="text-primary">+</span></div>
+                        <div class="text-sm text-gray-400 font-medium">Design Awards</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- END: Services Section -->
+    <!-- BEGIN: The Zyra Approach Section -->
+    <!-- BEGIN: About Us Section (Unified Approach & Team) -->
+    <section id="about" class="py-24 lg:py-32 bg-brandSoft border-y border-gray-100 overflow-hidden relative">
+        <!-- Floating Brand Accents -->
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <!-- Unified Section Header -->
+            <div class="text-center mb-20 lg:mb-24 reveal-up">
+                <span
+                    class="inline-block px-4 py-1.5 bg-brandDark text-white text-[10px] font-bold rounded-full uppercase tracking-[0.4em] mb-6 shadow-sm">About
+                    Zyra</span>
+                <h2 class="text-5xl lg:text-7xl font-light tracking-tighter text-brandDark mb-8 leading-[0.9]">
+                    The Soul <span class="italic font-normal">Behind</span> <br /> Every Space.
+                </h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+                    We combine a clinical attention to process with a passionate creative soul to deliver environments
+                    that truly resonate.
+                </p>
+            </div>
+
+            <!-- Part 1: The Zyra Approach -->
+            <div class="mb-32 lg:mb-40">
+                <div class="flex items-center gap-4 mb-12 reveal-up">
+                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-primary">01. Our Methodology</h3>
+                    <div class="h-px flex-grow bg-gray-200"></div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8 lg:gap-12 reveal-up">
+                    <!-- Step 01 -->
+                    <div class="group">
+                        <div
+                            class="relative aspect-video rounded-[2.5rem] overflow-hidden mb-6 shadow-xl border border-white">
+                            <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?auto=format&fit=crop&q=80&w=800&h=450"
+                                alt="Immersion"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                            <div
+                                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-brandDark font-bold text-xs shadow-sm">
+                                01</div>
+                        </div>
+                        <h4 class="text-xl font-bold text-brandDark mb-3 tracking-tight">Immersion</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Defining your vision through deep consultation
+                            and exhaustive lifestyle mapping.</p>
+                    </div>
+
+                    <!-- Step 02 -->
+                    <div class="group">
+                        <div
+                            class="relative aspect-video rounded-[2.5rem] overflow-hidden mb-6 shadow-xl border border-white">
+                            <img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=80&w=800&h=450"
+                                alt="Curation"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                            <div
+                                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-brandDark font-bold text-xs shadow-sm">
+                                02</div>
+                        </div>
+                        <h4 class="text-xl font-bold text-brandDark mb-3 tracking-tight">Curation</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Translating ideas into cinematic 3D
+                            visualizations and bespoke material palettes.</p>
+                    </div>
+
+                    <!-- Step 03 -->
+                    <div class="group">
+                        <div
+                            class="relative aspect-video rounded-[2.5rem] overflow-hidden mb-6 shadow-xl border border-white">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800&h=450"
+                                alt="Realization"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                            <div
+                                class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-brandDark font-bold text-xs shadow-sm">
+                                03</div>
+                        </div>
+                        <h4 class="text-xl font-bold text-brandDark mb-3 tracking-tight">Realization</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Meticulous oversight and white-glove styling
+                            for a flawless final reveal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 2: Meet the Team -->
+            <div id="designers">
+                <div class="flex items-center gap-4 mb-12 reveal-up">
+                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-primary">02. Creative Minds</h3>
+                    <div class="h-px flex-grow bg-gray-200"></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-10 lg:gap-14 reveal-up">
+                    <!-- Elena Vasquez -->
+                    <div class="member-card shadow-2xl">
+                        <div class="member-image-container">
+                            <img src="images/designer-1.png" alt="Elena Vasquez" class="member-image" />
+                            <div class="member-overlay">
+                                <div class="member-details">
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-6">With 15+ years of experience,
+                                        Elena founded Zyra to bring thoughtful, human-centered design to every home.</p>
+                                    <div class="flex gap-4">
+                                        <a href="#" class="member-social-link"><svg class="w-5 h-5" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="member-brief">
+                                <h4 class="text-xl font-extrabold text-brandDark mb-1">Elena Vasquez</h4>
+                                <p class="text-primary font-bold text-[10px] uppercase tracking-widest">Founder & Lead
+                                    Designer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- James Thornton -->
+                    <div class="member-card shadow-2xl">
+                        <div class="member-image-container">
+                            <img src="images/designer-2.png" alt="James Thornton" class="member-image" />
+                            <div class="member-overlay">
+                                <div class="member-details">
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-6">James brings structural
+                                        brilliance and architectural precision from his background at MIT.</p>
+                                    <div class="flex gap-4">
+                                        <a href="#" class="member-social-link"><svg class="w-5 h-5" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="member-brief">
+                                <h4 class="text-xl font-extrabold text-brandDark mb-1">James Thornton</h4>
+                                <p class="text-primary font-bold text-[10px] uppercase tracking-widest">Senior Architect
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Amara Osei -->
+                    <div class="member-card shadow-2xl">
+                        <div class="member-image-container">
+                            <img src="images/designer-3.png" alt="Amara Osei" class="member-image" />
+                            <div class="member-overlay">
+                                <div class="member-details">
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-6">Amara specializes in the final
+                                        layer—the textures and art that turn a house into a soulful home.</p>
+                                    <div class="flex gap-4">
+                                        <a href="#" class="member-social-link"><svg class="w-5 h-5" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="member-brief">
+                                <h4 class="text-xl font-extrabold text-brandDark mb-1">Amara Osei</h4>
+                                <p class="text-primary font-bold text-[10px] uppercase tracking-widest">Creative Stylist
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END: About Us Section -->
+    <!-- END: Meet The Team Section -->
+
+
+
+
+    <style>
+        .vol-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 6px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 100px;
+            outline: none;
+            writing-mode: vertical-lr;
+            direction: rtl;
+            cursor: pointer;
+        }
+
+        .vol-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #11d411;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 8px rgba(17, 212, 17, 0.4);
+        }
+
+        .vol-range::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #11d411;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 8px rgba(17, 212, 17, 0.4);
+        }
+
+        .vol-range::-webkit-slider-runnable-track {
+            background: linear-gradient(to top, #11d411 0%, rgba(255, 255, 255, 0.2) 100%);
+            border-radius: 100px;
+        }
+
+        .volume-slider-popup {
+            animation: fadeSlideUp 0.2s ease;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- BEGIN: Testimonials Section -->
+    <section id="reviews" class="py-12 lg:py-20 bg-brandSoft relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 w-full relative z-10">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-14 gap-4">
+                <div>
+                    <span
+                        class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-4">Client
+                        Stories</span>
+                    <h2 class="text-3xl lg:text-4xl font-extrabold text-brandDark leading-[1.08]">Hear from our clients
+                    </h2>
+                </div>
+                <p class="text-gray-500 text-sm max-w-xs leading-relaxed">Real stories from the people who trusted us to
+                    transform their spaces.</p>
+            </div>
+
+            <!-- Video Testimonials Carousel -->
+            <div class="relative">
+                <div id="videoTestimonialTrack" class="flex gap-5 overflow-hidden scroll-smooth"
+                    style="scroll-behavior:smooth;">
+
+                    <!-- Card 1 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            src="videos/Testimonial Ex.mp4"></video>
+                        <!-- Gradient overlay -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <!-- Name & Avatar - Top Left -->
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Eliza" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Eliza Mary</p>
+                                <p class="text-white/60 text-[10px]">CEO, AhpCorps</p>
+                            </div>
+                        </div>
+                        <!-- Volume button -->
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Play indicator -->
+                        <div
+                            class="play-indicator absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-0 transition-opacity">
+                            <div
+                                class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/7578554/7578554-uhd_1440_2560_30fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Marcus" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Marcus Chen</p>
+                                <p class="text-white/60 text-[10px]">CEO, TechVentures</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/7579958/7579958-uhd_1440_2560_30fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Hannah" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Hannah Rivera</p>
+                                <p class="text-white/60 text-[10px]">Apartment Client</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/8348122/8348122-uhd_1440_2560_25fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Greg" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Greg Thompson</p>
+                                <p class="text-white/60 text-[10px]">Commercial Client</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/7578546/7578546-uhd_1440_2560_30fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Elena" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Elena Vasquez</p>
+                                <p class="text-white/60 text-[10px]">Luxury Home Client</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/6774861/6774861-uhd_1440_2560_25fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="James" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">James Thornton</p>
+                                <p class="text-white/60 text-[10px]">Office Redesign</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 7 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/7578554/7578554-uhd_1440_2560_30fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-4 left-4 flex items-center gap-2.5 z-10">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="Amara" class="w-8 h-8 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-[13px] leading-tight">Amara Osei</p>
+                                <p class="text-white/60 text-[10px]">Styling Client</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 8 -->
+                    <div class="video-testimonial-card flex-shrink-0 w-[calc(25%-15px)] rounded-[24px] overflow-hidden relative cursor-pointer group"
+                        style="aspect-ratio:3/4;">
+                        <video class="w-full h-full object-cover" muted loop playsinline preload="metadata"
+                            poster="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600&h=800"
+                            src="https://videos.pexels.com/video-files/8348122/8348122-uhd_1440_2560_25fps.mp4"></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 pointer-events-none">
+                        </div>
+                        <div class="absolute top-5 left-5 flex items-center gap-3 z-10">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=80&h=80"
+                                alt="David" class="w-10 h-10 rounded-full object-cover border-2 border-white/40">
+                            <div>
+                                <p class="text-white font-bold text-sm leading-tight">David Kim</p>
+                                <p class="text-white/60 text-xs">Restaurant Owner</p>
+                            </div>
+                        </div>
+                        <div
+                            class="volume-control absolute bottom-5 right-5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center">
+                            <div
+                                class="volume-slider-popup hidden flex flex-col items-center bg-black/60 backdrop-blur-xl rounded-full px-2 py-4 mb-2 border border-white/10">
+                                <input type="range" min="0" max="100" value="50" class="vol-range" orient="vertical"
+                                    oninput="adjustVolume(event, this)">
+                            </div>
+                            <button onclick="toggleTestimonialVolume(event, this)"
+                                onmouseenter="this.parentElement.querySelector('.volume-slider-popup').classList.remove('hidden')"
+                                class="vol-btn w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 border border-white/10 transition-all">
+                                <svg class="vol-on w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path
+                                        d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M11 5L6 9H2v6h4l5 4V5z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg class="vol-off w-5 h-5 text-white hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center justify-end gap-4 mt-8">
+                <!-- Progress bar -->
+                <div class="w-24 h-1 bg-gray-300/50 rounded-full overflow-hidden">
+                    <div id="videoTestimonialProgress"
+                        class="h-full bg-brandDark rounded-full transition-all duration-500" style="width:50%"></div>
+                </div>
+                <!-- Arrows -->
+                <button onclick="scrollVideoTestimonials(-1)"
+                    class="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-brandDark hover:bg-brandDark hover:text-white text-gray-400 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <button onclick="scrollVideoTestimonials(1)"
+                    class="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-brandDark hover:bg-brandDark hover:text-white text-gray-400 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- END: Testimonials Section -->
+
+    <!-- BEGIN: FAQ Section -->
+    <section class="py-16 lg:py-16 xl:py-24 bg-brandSoft">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-10 lg:mb-8 xl:mb-12 reveal-up">
+                <h2 class="text-4xl lg:text-5xl xl:text-5xl font-extrabold mb-5">Frequently Asked Questions</h2>
+                <p class="text-gray-500 text-lg">Everything you need to know before getting started</p>
+            </div>
+
+            <div id="faqContainer" class="reveal-up">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What's the typical budget for a project?</span>
+                        <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Our projects range from $5,000 for styling consultations to
+                            $150,000+ for full residential or commercial redesigns. During our initial consultation,
+                            we'll discuss your vision and provide a detailed proposal tailored to your budget and scope.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How long does a typical project take?</span>
+                        <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Timelines vary by scope. A single room refresh typically takes 4–6
+                            weeks, while full-home transformations can take 3–6 months. We provide a detailed timeline
+                            during the design phase so you always know what to expect.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Do you offer virtual design consultations?</span>
+                        <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Absolutely! Our E-Design service allows us to work with clients
+                            anywhere in the world. We use video calls, mood boards, and 3D renderings to bring your
+                            vision to life — no matter the distance.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What areas do you serve?</span>
+                        <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We primarily serve clients across India with on-site services. For
+                            virtual consultations and E-Design, we work with clients globally. Let us know your location
+                            and we'll find the best way to collaborate.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I be involved in the design process?</span>
+                        <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We encourage it! Your input is invaluable. We schedule regular
+                            check-ins and presentations throughout the project, and nothing moves forward without your
+                            approval. It's a true collaboration.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END: FAQ Section -->
+
+    <script>
+        // Video Testimonial Hover Play
+        document.querySelectorAll('.video-testimonial-card').forEach(card => {
+            const video = card.querySelector('video');
+            card.addEventListener('mouseenter', () => {
+                video.play().catch(() => { });
+            });
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
+
+        // Volume Toggle
+        function toggleTestimonialVolume(e, btn) {
+            e.stopPropagation();
+            const card = btn.closest('.video-testimonial-card');
+            const video = card.querySelector('video');
+            const volOn = btn.querySelector('.vol-on');
+            const volOff = btn.querySelector('.vol-off');
+            const slider = btn.parentElement.querySelector('.vol-range');
+            video.muted = !video.muted;
+            if (video.muted) {
+                volOn.classList.remove('hidden');
+                volOff.classList.add('hidden');
+            } else {
+                volOn.classList.add('hidden');
+                volOff.classList.remove('hidden');
+                if (slider) video.volume = slider.value / 100;
+            }
+        }
+
+        // Volume Slider Adjust
+        function adjustVolume(e, slider) {
+            e.stopPropagation();
+            const card = slider.closest('.video-testimonial-card');
+            const video = card.querySelector('video');
+            const volCtrl = slider.closest('.volume-control');
+            const volOn = volCtrl.querySelector('.vol-on');
+            const volOff = volCtrl.querySelector('.vol-off');
+            video.volume = slider.value / 100;
+            if (slider.value == 0) {
+                video.muted = true;
+                volOn.classList.add('hidden');
+                volOff.classList.remove('hidden');
+            } else {
+                video.muted = false;
+                volOn.classList.remove('hidden');
+                volOff.classList.add('hidden');
+            }
+        }
+
+        // Hide volume slider on mouse leave
+        document.querySelectorAll('.volume-control').forEach(ctrl => {
+            ctrl.addEventListener('mouseleave', () => {
+                ctrl.querySelector('.volume-slider-popup').classList.add('hidden');
+            });
+        });
+
+        // Scroll Carousel
+        let videoTestimonialPage = 0;
+        function scrollVideoTestimonials(dir) {
+            const track = document.getElementById('videoTestimonialTrack');
+            const cards = track.querySelectorAll('.video-testimonial-card');
+            const cardWidth = cards[0].offsetWidth + 20; // card + gap
+            const visibleCards = 4;
+            const totalPages = Math.ceil(cards.length / visibleCards);
+            videoTestimonialPage = Math.max(0, Math.min(videoTestimonialPage + dir, totalPages - 1));
+            track.scrollTo({ left: videoTestimonialPage * cardWidth * visibleCards, behavior: 'smooth' });
+            // Update progress
+            const progress = document.getElementById('videoTestimonialProgress');
+            progress.style.width = ((videoTestimonialPage + 1) / totalPages * 100) + '%';
+        }
+    </script>
+    <!-- BEGIN: Book a Consultation Section (Redesigned) -->
+    <!-- BEGIN: Contact & Conversation Section -->
+    <section id="contact" class="py-20 lg:py-24 xl:py-32 bg-brandSoft relative overflow-hidden">
+        <!-- Background Sophistication -->
+        <div
+            class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[160px] translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] -translate-x-1/2 translate-y-1/2 pointer-events-none">
+        </div>
+
+        <!-- Large Background Watermark -->
+        <div
+            class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/4 text-[20vw] font-bold text-black/[0.02] select-none pointer-events-none leading-none tracking-tighter">
+            CONNECT
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+                <!-- Left: Studio Information -->
+                <div class="reveal-up">
+                    <span
+                        class="inline-block px-4 py-1.5 bg-brandDark text-white text-[10px] font-bold rounded-full uppercase tracking-[0.4em] mb-8 shadow-sm">Get
+                        In Touch</span>
+
+                    <h2
+                        class="text-3xl lg:text-4xl font-light tracking-tighter text-brandDark mb-4 lg:mb-6 leading-[0.85]">
+                        Crafting <br /> <span class="italic font-normal">your</span> vision.
+                    </h2>
+
+                    <p class="text-gray-500 text-xs lg:text-sm max-w-[280px] leading-relaxed mb-8 font-medium">
+                        Whether it's a refined residential sanctuary or a high-performance workspace, let's start a
+                        conversation about your project.
+                    </p>
+
+                    <!-- Minimal Contact Strip -->
+                    <div class="space-y-5">
+                        <div class="group cursor-pointer">
+                            <p class="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-0.5 font-bold">Email</p>
+                            <a href="mailto:hello@zyra.design"
+                                class="text-base lg:text-lg font-bold text-brandDark hover:text-primary transition-colors inline-block relative overflow-hidden pb-0.5">
+                                hello@zyra.design
+                                <div
+                                    class="absolute bottom-0 left-0 w-full h-px bg-primary -translate-x-full group-hover:translate-x-0 transition-transform duration-500">
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="group cursor-pointer">
+                            <p class="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-0.5 font-bold">Studio</p>
+                            <p class="text-sm font-medium text-brandDark/80 leading-relaxed max-w-xs">
+                                402, Design Quarter, Bengaluru, <br /> Karnataka 560001
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: High-End Form Card -->
+                <div class="reveal-up w-full" style="transition-delay: 200ms;">
+                    <div
+                        class="bg-white rounded-[1.5rem] p-6 lg:p-7 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.06)] border border-white/50 relative overflow-hidden group">
+                        <!-- Card Border Accent -->
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-primary"></div>
+
+                        <h3 class="text-xl font-bold text-brandDark mb-5 tracking-tight">Project Inquiry</h3>
+
+                        <form onsubmit="submitContactForm(event)" class="space-y-4">
+                            <!-- Floating-style inputs (Minimal) -->
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="relative">
+                                    <input type="text" id="name" required
+                                        class="peer w-full bg-transparent border-b border-gray-100 py-2 text-brandDark font-bold placeholder-transparent focus:outline-none focus:border-primary transition-all text-sm">
+                                    <label for="name"
+                                        class="absolute left-0 -top-4 text-gray-400 text-[9px] font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-primary pointer-events-none">Full
+                                        Name</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="email" id="email" required
+                                        class="peer w-full bg-transparent border-b border-gray-100 py-2 text-brandDark font-bold placeholder-transparent focus:outline-none focus:border-primary transition-all text-sm">
+                                    <label for="email"
+                                        class="absolute left-0 -top-4 text-gray-400 text-[9px] font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-primary pointer-events-none">Email
+                                        Address</label>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <select id="interest"
+                                    class="peer w-full bg-transparent bg-none border-b border-gray-100 py-2 text-brandDark font-bold focus:outline-none focus:border-primary transition-all text-sm appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select an Interest</option>
+                                    <option>Residential Masterpiece</option>
+                                    <option>Commercial Transformation</option>
+                                    <option>Bespoke Consultation</option>
+                                </select>
+                                <label for="interest"
+                                    class="absolute left-0 -top-4 text-gray-400 text-[9px] font-bold uppercase tracking-widest pointer-events-none">Project
+                                    Interest</label>
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-primary">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <textarea id="message" rows="3" required
+                                    class="peer w-full bg-transparent border-b border-gray-100 py-2 text-brandDark font-bold placeholder-transparent focus:outline-none focus:border-primary transition-all text-sm resize-none"></textarea>
+                                <label for="message"
+                                    class="absolute left-0 -top-4 text-gray-400 text-[9px] font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-primary pointer-events-none">Project
+                                    Brief</label>
+                            </div>
+
+                            <button type="submit"
+                                class="group relative w-full bg-brandDark text-white font-bold py-4 rounded-lg overflow-hidden shadow-lg transition-all duration-500 hover:bg-primary hover:text-brandDark">
+                                <span
+                                    class="relative z-10 flex items-center justify-center gap-2 text-sm tracking-tight">
+                                    Send Inquiry
+                                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-width="2.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+
+                        <!-- Form Success Message -->
+                        <div id="formSuccess"
+                            class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center text-center p-10 z-20">
+                            <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                                <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h4 class="text-3xl font-extrabold text-brandDark mb-4">Inquiry Received</h4>
+                            <p class="text-gray-500 mb-8 max-w-xs">One of our lead designers will reach out to you
+                                within 24 hours.</p>
+                            <button onclick="location.reload()"
+                                class="bg-brandDark text-white px-10 py-4 rounded-xl font-bold hover:bg-primary hover:text-brandDark transition-all">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- END: Contact & Conversation Section -->
+    <!-- END: Book a Consultation Section -->
+    <!-- BEGIN: Footer -->
+    <footer class="bg-brandDark text-white py-16 lg:py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-6 h-6 bg-primary rounded-full"></div>
+                        <span class="text-lg font-extrabold tracking-tight">ZYRA DESIGNS</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Elevating everyday living through thoughtful, functional, and beautiful interior design
+                        solutions.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-primary">Company</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a class="hover:text-white transition-colors" href="#">Our Story</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">Portfolio</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">Journal</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-primary">Services</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a class="hover:text-white transition-colors" href="#">Residential</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">Commercial</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">E-Design</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">Styling</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-primary">Social</h4>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
+                            href="#">
+                            <span class="sr-only">Instagram</span>
+                            <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
+                            href="#">
+                            <span class="sr-only">Pinterest</span>
+                            <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+                                <path
+                                    d="M12.017 0c-6.627 0-12 5.373-12 12 0 5.089 3.161 9.426 7.624 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.261 7.929-7.261 4.162 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <p>© 2024 Zyra Designs International. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+                    <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+                    <a class="hover:text-white transition-colors" href="#">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END: Footer -->
+
+    <!-- BEGIN: Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeContactModal()" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Form -->
+            <div id="contactForm">
+                <div class="mb-1">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-extrabold mb-2" style="letter-spacing:-0.02em">Let's Talk Design</h3>
+                    <p class="text-gray-500 text-sm mb-6">Tell us about your vision. We'll get back to you within 24
+                        hours.</p>
+                </div>
+
+                <form onsubmit="submitContactForm(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="contactName">Full
+                            Name</label>
+                        <input type="text" id="contactName" placeholder="e.g. Sarah Jenkins" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="contactEmail">Email
+                            Address</label>
+                        <input type="email" id="contactEmail" placeholder="e.g. sarah@example.com" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="contactMessage">Your
+                            Message</label>
+                        <textarea id="contactMessage" placeholder="Tell us about your project, timeline, and budget..."
+                            required></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-primary text-white py-4 rounded-xl text-base font-bold hover:brightness-110 transition-all mt-2"
+                        style="letter-spacing:-0.01em">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success State -->
+            <div class="form-success" id="formSuccess">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="32" fill="#11d411" opacity="0.1" />
+                    <circle cx="32" cy="32" r="22" fill="#11d411" opacity="0.2" />
+                    <path d="M22 33l6 6 14-14" stroke="#11d411" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <h3 class="text-2xl font-extrabold mb-2">Message Sent!</h3>
+                <p class="text-gray-500 mb-6">Thanks for reaching out. We'll be in touch within 24 hours.</p>
+                <button onclick="closeContactModal()"
+                    class="bg-brandDark text-white px-8 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- END: Contact Modal -->
+
+    <!-- BEGIN: Floating Buttons -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <a href="https://wa.me/918921768691?text=Hi%20Zyra%20Designs!%20I'm%20interested%20in%20your%20services."
+        target="_blank" rel="noopener" class="floating-btn whatsapp-btn" aria-label="Chat on WhatsApp"
+        title="Chat on WhatsApp">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <button class="floating-btn back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        aria-label="Back to top" title="Back to top">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+    <!-- END: Floating Buttons -->
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            menu.classList.toggle('active');
+            btn.classList.toggle('active');
+
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            menu.classList.remove('active');
+            btn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset form after close animation
+            setTimeout(() => {
+                document.getElementById('contactForm').style.display = 'block';
+                document.getElementById('formSuccess').classList.remove('show');
+                document.querySelector('#contactForm form').reset();
+            }, 300);
+        }
+
+        function showToast(message, subtitle = "We'll reach out shortly", type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast-message ${type === 'error' ? 'border-red-500' : ''}`;
+
+            const iconColor = type === 'error' ? 'text-red-500' : 'text-primary';
+            const iconBg = type === 'error' ? 'bg-red-500/10' : 'bg-primary/10';
+
+            toast.innerHTML = `
+                <div class="toast-icon ${iconBg} ${iconColor}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        ${type === 'error'
+                    ? '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>'
+                    : '<polyline points="20 6 9 17 4 12"></polyline>'}
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <p class="font-bold text-sm tracking-tight">${message}</p>
+                    ${subtitle ? `<p class="text-[10px] text-gray-400 font-medium">${subtitle}</p>` : ''}
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('active'), 100);
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('active');
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
+        }
+
+        async function submitContactForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // Loading State
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2">Connecting...</span>';
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyfG00Y0_Qrn5BpiCuFHFLu2EFHn73dP8g_OEAZg6SXXJrRXMQffwcwZOoiomSRnNth/exec';
+            const isModal = form.closest('#contactModal');
+
+            // Map keys EXACTLY to what your Code.gs 'JSON.parse' expects
+            const payload = {
+                name: isModal ? document.getElementById('contactName').value : document.getElementById('name').value,
+                email: isModal ? document.getElementById('contactEmail').value : document.getElementById('email').value,
+                project: isModal ? 'General Inquiry (Modal)' : document.getElementById('interest').value,
+                message: isModal ? document.getElementById('contactMessage').value : document.getElementById('message').value
+            };
+
+            try {
+                // Since your Code.gs uses JSON.parse(e.postData.contents), 
+                // we send a clean JSON string as the body.
+                await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload)
+                });
+
+                if (isModal) {
+                    document.getElementById('contactForm').style.display = 'none';
+                    document.getElementById('formSuccess').classList.add('show');
+                } else {
+                    showToast('Inquiry Received Successfully');
+                    form.reset();
+                }
+            } catch (error) {
+                console.error('Error!', error.message);
+                showToast('Submission Problem', 'Check connection & try again', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('contactModal').addEventListener('click', function (e) {
+            if (e.target === this) closeContactModal();
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeContactModal();
+        });
+
+        // Back to Top button visibility
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // FAQ Accordion
+        function toggleFaq(btn) {
+            const item = btn.parentElement;
+            const isActive = item.classList.contains('active');
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+            // Open clicked if it wasn't already open
+            if (!isActive) item.classList.add('active');
+        }
+
+        // Testimonial Carousel Logic
+        let currentTestimonial = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.testimonial-dot');
+
+        function updateSlider() {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentTestimonial);
+                if (dots[i]) dots[i].classList.toggle('active', i === currentTestimonial);
+            });
+        }
+
+        function changeTestimonial(n) {
+            currentTestimonial = (currentTestimonial + n + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function goToTestimonial(n) {
+            currentTestimonial = n;
+            updateSlider();
+        }
+
+        // Auto-play testimonials every 6 seconds
+        let testimonialInterval = setInterval(() => changeTestimonial(1), 6000);
+
+        // Pause auto-play on hover
+        const sliderContainer = document.getElementById('testimonialSlider');
+        if (sliderContainer) {
+            sliderContainer.addEventListener('mouseenter', () => clearInterval(testimonialInterval));
+            sliderContainer.addEventListener('mouseleave', () => {
+                testimonialInterval = setInterval(() => changeTestimonial(1), 6000);
+            });
+        }
+
+        // Counter Animation Logic
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200; // The lower the slower
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+
+                    // Lower increment to slow and smooth it out
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 15);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Scroll Trigger with Intersection Observer
+        const statsSection = document.getElementById('statsSection');
+        const revealElements = document.querySelectorAll('.reveal-up');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'statsSection') {
+                        animateCounters();
+                    } else {
+                        entry.target.classList.add('active');
+                    }
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        if (statsSection) sectionObserver.observe(statsSection);
+        revealElements.forEach(el => sectionObserver.observe(el));
+
+        // Hero Image Slider Logic
+        let currentHeroImage = 0;
+        const heroSlides = document.querySelectorAll('.hero-image-slide');
+
+        function rotateHeroImages() {
+            if (heroSlides.length === 0) return;
+            heroSlides[currentHeroImage].classList.remove('active');
+            currentHeroImage = (currentHeroImage + 1) % heroSlides.length;
+            heroSlides[currentHeroImage].classList.add('active');
+        }
+
+        setInterval(rotateHeroImages, 5000);
+
+        // Word Scroller Logic
+        const scrollerInner = document.querySelector('.word-scroller-inner');
+        if (scrollerInner) {
+            const words = scrollerInner.children;
+            let currentWord = 0;
+
+            function rotateWords() {
+                currentWord = (currentWord + 1) % words.length;
+                scrollerInner.style.transform = `translateY(-${currentWord * (100 / words.length)}%)`;
+            }
+
+            setInterval(rotateWords, 2500);
+        }
+    </script>
+
+</body>
+
+</html>
