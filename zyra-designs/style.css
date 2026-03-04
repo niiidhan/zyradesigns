@@ -514,7 +514,7 @@ select.consult-input {
     top: 0;
     left: 0;
     right: 0;
-    height: 60vh;
+    height: auto;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(25px);
     z-index: 100;
@@ -526,6 +526,8 @@ select.consult-input {
     transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+    padding-top: 40px;
+    padding-bottom: 20px;
 }
 
 .mobile-menu-overlay.active {
