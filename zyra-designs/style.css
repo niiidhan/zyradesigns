@@ -456,13 +456,23 @@ select.consult-input {
 /* Toast Notification Styles */
 .toast-container {
     position: fixed;
-    top: 100px;
-    right: 40px;
-    z-index: 1000;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 12px;
     pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    .toast-container {
+        right: 15px;
+        left: 15px;
+        /* On mobile, let's make it more prominent or just keep it right? */
+        /* Actually user asked for top right corner */
+        left: auto;
+    }
 }
 
 .toast-message {
